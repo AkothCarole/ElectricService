@@ -1,0 +1,1065 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Week 4  Independent_Project_March 2020_Caroline_Akoth",
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyODEfPilMH6yR3oI557N3D2",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AkothCarole/ElectricService/blob/master/Week_4_Independent_Project_March_2020_Caroline_Akoth\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "fFjRqiNJ_JQ7",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "Research Question\n",
+        "#Bonus Questions (Optional)\n",
+        "\n",
+        "#What station is the most popular?\n",
+        "#Overall?\n",
+        "#At the most popular picking hour?\n",
+        "?\n",
+        "#Overall?\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vkj4VPecJxZs",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "# Import Libraries\n",
+        "import pandas as pd\n",
+        "import numpy as np"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9XutDtMeJ7Pp",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 210
+        },
+        "outputId": "893859c3-6f6b-49f0-adcd-f31bafe4e350"
+      },
+      "source": [
+        "#Create DataFrame\n",
+        "df=pd.read_csv ('Autolib_dataset (2).csv')\n",
+        "df.head (2)\n"
+      ],
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Cars</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "      <th>Utilib counter</th>\n",
+              "      <th>Utilib 1.4 counter</th>\n",
+              "      <th>Charge Slots</th>\n",
+              "      <th>Charging Status</th>\n",
+              "      <th>City</th>\n",
+              "      <th>Displayed comment</th>\n",
+              "      <th>ID</th>\n",
+              "      <th>Kind</th>\n",
+              "      <th>Geo point</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Public name</th>\n",
+              "      <th>Rental status</th>\n",
+              "      <th>Scheduled at</th>\n",
+              "      <th>Slots</th>\n",
+              "      <th>Station type</th>\n",
+              "      <th>Status</th>\n",
+              "      <th>Subscription status</th>\n",
+              "      <th>year</th>\n",
+              "      <th>month</th>\n",
+              "      <th>day</th>\n",
+              "      <th>hour</th>\n",
+              "      <th>minute</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>2 Avenue de Suffren</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>Paris</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>paris-suffren-2</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.857, 2.2917</td>\n",
+              "      <td>75015</td>\n",
+              "      <td>Paris/Suffren/2</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>2</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>8</td>\n",
+              "      <td>11</td>\n",
+              "      <td>43</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>145 Rue Raymond Losserand</td>\n",
+              "      <td>6</td>\n",
+              "      <td>6</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>Paris</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>paris-raymondlosserand-145</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.83126, 2.313088</td>\n",
+              "      <td>75014</td>\n",
+              "      <td>Paris/Raymond Losserand/145</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>0</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>6</td>\n",
+              "      <td>7</td>\n",
+              "      <td>24</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                     Address  Cars  Bluecar counter  ...  day  hour  minute\n",
+              "0        2 Avenue de Suffren     0                0  ...    8    11      43\n",
+              "1  145 Rue Raymond Losserand     6                6  ...    6     7      24\n",
+              "\n",
+              "[2 rows x 25 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 9
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "sAFIqeXSLdIt",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 252
+        },
+        "outputId": "e7f5ebfb-a9de-4615-b5b0-c15b2c2e6886"
+      },
+      "source": [
+        "#Get information about the dataset\n",
+        "df.info"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<bound method DataFrame.info of                                  Address  Cars  ...  hour  minute\n",
+              "0                    2 Avenue de Suffren     0  ...    11      43\n",
+              "1              145 Rue Raymond Losserand     6  ...     7      24\n",
+              "2       2 Avenue John Fitzgerald Kennedy     3  ...    20      14\n",
+              "3                 51 Rue EugÃ¨ne OudinÃ©     3  ...     4      37\n",
+              "4     6 avenue de la Porte de Champerret     3  ...    17      23\n",
+              "...                                  ...   ...  ...   ...     ...\n",
+              "4995                 8 avenue MÃ©nelotte     2  ...    11      26\n",
+              "4996                   37 rue de Dantzig     4  ...    16      56\n",
+              "4997                      142 rue du Bac     1  ...     7       1\n",
+              "4998         2 avenue du Val de Fontenay     2  ...    17      27\n",
+              "4999                 5 Rue Henry Brisson     4  ...    10       2\n",
+              "\n",
+              "[5000 rows x 25 columns]>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "k1ESJrY_M30p",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 454
+        },
+        "outputId": "98699a88-cd93-40f3-bebb-4edf9de260bd"
+      },
+      "source": [
+        "#Check Accuracy, Completeness and Consistency in Dataset\n",
+        "df.isnull().sum()\n"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Address                   0\n",
+              "Cars                      0\n",
+              "Bluecar counter           0\n",
+              "Utilib counter            0\n",
+              "Utilib 1.4 counter        0\n",
+              "Charge Slots              0\n",
+              "Charging Status           0\n",
+              "City                      0\n",
+              "Displayed comment      4889\n",
+              "ID                        0\n",
+              "Kind                      0\n",
+              "Geo point                 0\n",
+              "Postal code               0\n",
+              "Public name               0\n",
+              "Rental status             0\n",
+              "Scheduled at           4953\n",
+              "Slots                     0\n",
+              "Station type              0\n",
+              "Status                    0\n",
+              "Subscription status       0\n",
+              "year                      0\n",
+              "month                     0\n",
+              "day                       0\n",
+              "hour                      0\n",
+              "minute                    0\n",
+              "dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 6
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "IsJw9E10NKTk",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 218
+        },
+        "outputId": "83dc5c5b-1431-4616-bc0f-04973cc66125"
+      },
+      "source": [
+        "# Drop null columns\n",
+        "df.pop ('Displayed comment')\n",
+        "df.pop ('Scheduled at')\n",
+        "#df"
+      ],
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0       NaN\n",
+              "1       NaN\n",
+              "2       NaN\n",
+              "3       NaN\n",
+              "4       NaN\n",
+              "       ... \n",
+              "4995    NaN\n",
+              "4996    NaN\n",
+              "4997    NaN\n",
+              "4998    NaN\n",
+              "4999    NaN\n",
+              "Name: Scheduled at, Length: 5000, dtype: object"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 10
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "RHYMOA5KOPkw",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 218
+        },
+        "outputId": "dee2c2d6-bfaf-463b-bb89-6227975abe49"
+      },
+      "source": [
+        "#Check duplicates\n",
+        "df.duplicated()"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0       False\n",
+              "1       False\n",
+              "2       False\n",
+              "3       False\n",
+              "4       False\n",
+              "        ...  \n",
+              "4995    False\n",
+              "4996    False\n",
+              "4997    False\n",
+              "4998    False\n",
+              "4999    False\n",
+              "Length: 5000, dtype: bool"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 11
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "oIn3sxM2Opmh",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 420
+        },
+        "outputId": "ca474b9e-0e7c-4d27-b5a4-2e8345b3a4ac"
+      },
+      "source": [
+        "#Check data types of columns\n",
+        "df.dtypes"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Address                object\n",
+              "Cars                    int64\n",
+              "Bluecar counter         int64\n",
+              "Utilib counter          int64\n",
+              "Utilib 1.4 counter      int64\n",
+              "Charge Slots            int64\n",
+              "Charging Status        object\n",
+              "City                   object\n",
+              "ID                     object\n",
+              "Kind                   object\n",
+              "Geo point              object\n",
+              "Postal code             int64\n",
+              "Public name            object\n",
+              "Rental status          object\n",
+              "Slots                   int64\n",
+              "Station type           object\n",
+              "Status                 object\n",
+              "Subscription status    object\n",
+              "year                    int64\n",
+              "month                   int64\n",
+              "day                     int64\n",
+              "hour                    int64\n",
+              "minute                  int64\n",
+              "dtype: object"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 12
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "24zt0YRYRDm3",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 118
+        },
+        "outputId": "602b601c-6b5b-4f92-e616-14fcac4329c9"
+      },
+      "source": [
+        "#Identify the most popular hour of the day for picking up a \n",
+        "#shared electric car (Bluecar) in the city of Paris over the \n",
+        "#month of April 2018\n",
+        "df.columns"
+      ],
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['Address', 'Cars', 'Bluecar counter', 'Utilib counter',\n",
+              "       'Utilib 1.4 counter', 'Charge Slots', 'Charging Status', 'City', 'ID',\n",
+              "       'Kind', 'Geo point', 'Postal code', 'Public name', 'Rental status',\n",
+              "       'Slots', 'Station type', 'Status', 'Subscription status', 'year',\n",
+              "       'month', 'day', 'hour', 'minute'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 14
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "8I461aTFVF0f",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 198
+        },
+        "outputId": "77bf871f-7541-4704-8859-2c9d34a06a76"
+      },
+      "source": [
+        "df1=df.sort_values(by='Bluecar counter',ascending=0).head(15)\n",
+        "car = df['Bluecar counter'] == 7\n",
+        "city = df ['City'] == 'Paris'\n",
+        "df1 [car & city]\n",
+        "#Answer : 3"
+      ],
+      "execution_count": 78,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.6/dist-packages/ipykernel_launcher.py:4: UserWarning: Boolean Series key will be reindexed to match DataFrame index.\n",
+            "  after removing the cwd from sys.path.\n"
+          ],
+          "name": "stderr"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Cars</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "      <th>Utilib counter</th>\n",
+              "      <th>Utilib 1.4 counter</th>\n",
+              "      <th>Charge Slots</th>\n",
+              "      <th>Charging Status</th>\n",
+              "      <th>City</th>\n",
+              "      <th>ID</th>\n",
+              "      <th>Kind</th>\n",
+              "      <th>Geo point</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Public name</th>\n",
+              "      <th>Rental status</th>\n",
+              "      <th>Slots</th>\n",
+              "      <th>Station type</th>\n",
+              "      <th>Status</th>\n",
+              "      <th>Subscription status</th>\n",
+              "      <th>year</th>\n",
+              "      <th>month</th>\n",
+              "      <th>day</th>\n",
+              "      <th>hour</th>\n",
+              "      <th>minute</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>2470</th>\n",
+              "      <td>2 rue du GÃ©nÃ©ral Renault</td>\n",
+              "      <td>7</td>\n",
+              "      <td>7</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>Paris</td>\n",
+              "      <td>paris-renault-2</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.8611413, 2.3781941</td>\n",
+              "      <td>75011</td>\n",
+              "      <td>Paris/Renault/2</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>0</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>9</td>\n",
+              "      <td>3</td>\n",
+              "      <td>12</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                         Address  Cars  Bluecar counter  ...  day  hour  minute\n",
+              "2470  2 rue du GÃ©nÃ©ral Renault     7                7  ...    9     3      12\n",
+              "\n",
+              "[1 rows x 23 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 78
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "oOiVYfP-WKoD",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 198
+        },
+        "outputId": "06fa4db0-a080-43e3-a7b3-a9a2089c8836"
+      },
+      "source": [
+        "#What is the most popular hour for returning cars?\n",
+        "df.sort_values(by='Slots',ascending=0).head(1)\n",
+        "#Answer : 11"
+      ],
+      "execution_count": 65,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Cars</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "      <th>Utilib counter</th>\n",
+              "      <th>Utilib 1.4 counter</th>\n",
+              "      <th>Charge Slots</th>\n",
+              "      <th>Charging Status</th>\n",
+              "      <th>City</th>\n",
+              "      <th>ID</th>\n",
+              "      <th>Kind</th>\n",
+              "      <th>Geo point</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Public name</th>\n",
+              "      <th>Rental status</th>\n",
+              "      <th>Slots</th>\n",
+              "      <th>Station type</th>\n",
+              "      <th>Status</th>\n",
+              "      <th>Subscription status</th>\n",
+              "      <th>year</th>\n",
+              "      <th>month</th>\n",
+              "      <th>day</th>\n",
+              "      <th>hour</th>\n",
+              "      <th>minute</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>1185</th>\n",
+              "      <td>17 rue Jean-Pierre Timbaud</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>Fontenay-Sous-Bois</td>\n",
+              "      <td>fontenaysousbois-jeanpierretimbaud-17</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.85773, 2.4747963</td>\n",
+              "      <td>94120</td>\n",
+              "      <td>Fontenay-Sous-Bois/Jean-Pierre Timbaud/17</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>7</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>6</td>\n",
+              "      <td>11</td>\n",
+              "      <td>49</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                         Address  Cars  Bluecar counter  ...  day  hour  minute\n",
+              "1185  17 rue Jean-Pierre Timbaud     0                0  ...    6    11      49\n",
+              "\n",
+              "[1 rows x 23 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 65
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "D4MDrfs3rnCV",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 67
+        },
+        "outputId": "5243b58a-56ca-4039-ec8a-d88969202641"
+      },
+      "source": [
+        "#What station is the most popular?\n",
+        "dfstation = df.groupby(['Address'])['Bluecar counter'].sum().sort_values(ascending=False)\n",
+        "dfstation.head(1)"
+      ],
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Address\n",
+              "32 rue Robert Marchand    50\n",
+              "Name: Bluecar counter, dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 14
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "X08Y26Zj2seD",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 77
+        },
+        "outputId": "28d8be56-076b-4fca-d6f0-ebfc5fa7e11d"
+      },
+      "source": [
+        "#What postal code is the most popular for picking up Blue cars? Does the most popular station belong to that postal code?\n",
+        "dfstation2 = df[['Address', 'Postal code', 'Bluecar counter']]\n",
+        "dfpostal = dfstation2.sort_values('Bluecar counter', ascending=False)\n",
+        "dfpostal.head(1)"
+      ],
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>1985</th>\n",
+              "      <td>99 rue Charles-de-Gaulle</td>\n",
+              "      <td>91330</td>\n",
+              "      <td>7</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                       Address  Postal code  Bluecar counter\n",
+              "1985  99 rue Charles-de-Gaulle        91330                7"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 17
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "haabqh443K-0",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 181
+        },
+        "outputId": "2de177a0-c88d-4337-f37e-0e6fa0789164"
+      },
+      "source": [
+        "#Most popular picking hour?\n",
+        "df.sort_values(by='Slots',ascending=1).head(1)\n",
+        "#Answer : 19 "
+      ],
+      "execution_count": 79,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Cars</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "      <th>Utilib counter</th>\n",
+              "      <th>Utilib 1.4 counter</th>\n",
+              "      <th>Charge Slots</th>\n",
+              "      <th>Charging Status</th>\n",
+              "      <th>City</th>\n",
+              "      <th>ID</th>\n",
+              "      <th>Kind</th>\n",
+              "      <th>Geo point</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Public name</th>\n",
+              "      <th>Rental status</th>\n",
+              "      <th>Slots</th>\n",
+              "      <th>Station type</th>\n",
+              "      <th>Status</th>\n",
+              "      <th>Subscription status</th>\n",
+              "      <th>year</th>\n",
+              "      <th>month</th>\n",
+              "      <th>day</th>\n",
+              "      <th>hour</th>\n",
+              "      <th>minute</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>2499</th>\n",
+              "      <td>20 bis rue du Sergent Godefroy</td>\n",
+              "      <td>5</td>\n",
+              "      <td>5</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>Montreuil</td>\n",
+              "      <td>montreuil-sergentgodefroy-20</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.8542461, 2.4312421</td>\n",
+              "      <td>93100</td>\n",
+              "      <td>Montreuil/Sergent Godefroy/20</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>0</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>6</td>\n",
+              "      <td>19</td>\n",
+              "      <td>42</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                             Address  Cars  Bluecar counter  ...  day  hour  minute\n",
+              "2499  20 bis rue du Sergent Godefroy     5                5  ...    6    19      42\n",
+              "\n",
+              "[1 rows x 23 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 79
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "hkLFiwAr3VSG",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 164
+        },
+        "outputId": "b9e36bf7-74ce-45f0-96c0-73bac9290f10"
+      },
+      "source": [
+        "#Do the results change if you consider Utilib and Utilib 1.4 instead of Blue cars? \n",
+        "df.sort_values(by='Utilib counter',ascending=0).head(1)\n",
+        "#Answer : Hour 18. \n"
+      ],
+      "execution_count": 81,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Address</th>\n",
+              "      <th>Cars</th>\n",
+              "      <th>Bluecar counter</th>\n",
+              "      <th>Utilib counter</th>\n",
+              "      <th>Utilib 1.4 counter</th>\n",
+              "      <th>Charge Slots</th>\n",
+              "      <th>Charging Status</th>\n",
+              "      <th>City</th>\n",
+              "      <th>ID</th>\n",
+              "      <th>Kind</th>\n",
+              "      <th>Geo point</th>\n",
+              "      <th>Postal code</th>\n",
+              "      <th>Public name</th>\n",
+              "      <th>Rental status</th>\n",
+              "      <th>Slots</th>\n",
+              "      <th>Station type</th>\n",
+              "      <th>Status</th>\n",
+              "      <th>Subscription status</th>\n",
+              "      <th>year</th>\n",
+              "      <th>month</th>\n",
+              "      <th>day</th>\n",
+              "      <th>hour</th>\n",
+              "      <th>minute</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>3329</th>\n",
+              "      <td>19 rue de Chateaubriand</td>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>Paris</td>\n",
+              "      <td>paris-chateaubriand-19</td>\n",
+              "      <td>STATION</td>\n",
+              "      <td>48.8734765, 2.3008886</td>\n",
+              "      <td>75008</td>\n",
+              "      <td>Paris/Chateaubriand/19</td>\n",
+              "      <td>operational</td>\n",
+              "      <td>0</td>\n",
+              "      <td>station</td>\n",
+              "      <td>ok</td>\n",
+              "      <td>nonexistent</td>\n",
+              "      <td>2018</td>\n",
+              "      <td>4</td>\n",
+              "      <td>5</td>\n",
+              "      <td>18</td>\n",
+              "      <td>10</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "                      Address  Cars  Bluecar counter  ...  day  hour  minute\n",
+              "3329  19 rue de Chateaubriand     2                2  ...    5    18      10\n",
+              "\n",
+              "[1 rows x 23 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 81
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "WE3AW0zk7gvA",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#To compute usage, we will need to understand that we have to join successive (in time)\n",
+        "#measures/counters for a given station, #as the difference will tell whether a car was picked up, returned, or nothing happened."
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "zB_zSNRg7YQc",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#Split geopoints into two columns\n"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
